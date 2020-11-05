@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Dominio.Core.Entities.Album>
+
+@{
+    ViewBag.Title = "Album";
+}
+
+<h2>Album</h2>
+
+<form method="post" action="@Url.Action("Fotos", "Operaciones")">
+
+    <div class="form-group">
+        <select class="form-control" name="id_album">
+
+            @foreach (var item in Model)
+            {
+                <option value="@item.id">@item.title</option>
+
+            }
+
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Vizualizar Album</button>
+
+</form>

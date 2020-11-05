@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).on("click", "#idComentarios", function () {
+            var id_foto = $(this).parents("tr").find("td")[1].innerHTML;
+            alert(id_foto);
+            
+            var url = $(this).parents("tr").find("td.ocultar").html();
+         
+
+         
+                $.ajax({
+                    url: "/Operaciones/Comentarios",
+                    contentType: "application/json; charset=utf-8",
+
+                    type: "GET",
+                    data: {id_foto:id_foto},
+                    dataType: "json",
+                    success: function (respuesta) {
+                        $("#tabla").find(".seccioncabecera").remove();
+                        $("#tabla .cuerpo").remove();
+                       
+                        $("#tabla").find(".cabecera").append("  <td class='seccioncabecera' colspan='4'><center> <img src=" + url +"/></center></td>")
+                        $.each(respuesta, function (index, elemento) {
+                          
+                            $("#tabla").append("<tbody class='cuerpo'><tr class='seccioncomentarios'><td>" + elemento.id + "</td><td>" + elemento.name + "</td><td>" + elemento.email + "</td><td>" + elemento.body + "</td></tr> </tbody>"
+                              
+                              
+                            );
+                        });
+                    },
+                    error: function () {
+                        alert(id_foto);
+                    }
+             
+        })
+
+        })
+
+    </script>
+</body>
+</html>
